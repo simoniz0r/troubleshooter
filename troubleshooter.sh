@@ -37,9 +37,20 @@ else
     cat /etc/os-release >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting kernel information ('uname -a')..."
     echo -e "\nKernel: $(uname -a)\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-    echo -e "##### Hardware Information:\n" > "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-    echo "Failed to get hardware information! Please install 'inxi' or 'lshw'!"
-    echo "Failed to get hardware information!" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo -e "##### Hardware Information:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo "Getting CPU information ('lscpu')..."
+    echo -e "\n###\n### 'lscpu':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    lscpu >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo "Getting drive information ('lsblk')..."
+    echo -e "\n###\n### 'lsblk':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    lsblk >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo "Getting PCI information which requires root ('sudo lspci -v')..."
+    echo -e "\n###\n### 'sudo lspci -v':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    sudo lspci -v >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo "Getting USB information ('lsusb; lsusb -t')..."
+    echo -e "\n###\n### 'lsusb; lsusb -t':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo -e "$(lsusb)\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    lsusb -t >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 fi
 echo -e "\n##### System Logs:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 # get system logs using either journalctl for systemd or rc.log and /var/log/syslog for others
