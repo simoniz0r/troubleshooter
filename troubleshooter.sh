@@ -44,7 +44,7 @@ else
     echo "Getting drive information ('lsblk')..."
     echo -e "\n###\n### 'lsblk':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     lsblk >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-    echo "Getting PCI information which requires root ('sudo lspci -v')..."
+    echo "Getting PCI information which requires root permissions ('sudo lspci -v')..."
     echo -e "\n###\n### 'sudo lspci -v':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     sudo lspci -v >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting USB information ('lsusb; lsusb -t')..."
