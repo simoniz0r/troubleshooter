@@ -20,7 +20,7 @@ LOG_DATE="$(date +%s)"
 if type inxi > /dev/null 2>&1; then
     echo -e "##### Hardware Information:\n" > "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting hardware info with inxi ('inxi -Fx')..."
-    inxi -Fx >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    inxi -Fx | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 # if not try to find lshw
 elif type lshw > /dev/null 2>&1 || [[ -f "/usr/sbin/lshw" ]]; then
     echo -e "##### Distribution Information:\n" > "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
