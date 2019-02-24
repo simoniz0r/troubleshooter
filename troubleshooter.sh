@@ -38,7 +38,7 @@ else
     echo "Getting kernel information ('uname -a')..."
     echo -e "\nKernel: $(uname -a)\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo -e "##### Hardware Information:\n" > "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-    echo "Failed to get hardware information!"
+    echo "Failed to get hardware information! Please install 'inxi' or 'lshw'!"
     echo "Failed to get hardware information!" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 fi
 echo -e "\n##### System Logs:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
