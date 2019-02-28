@@ -69,10 +69,10 @@ elif [[ -f "/var/log/rc.log" ]]; then
         sudo cat /var/log/syslog >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     fi
 fi
-echo "Getting dmesg log ('dmesg --level=err,warn')..."
-echo -e "\n###\n### 'dmesg --level=err,warn':\n###\n"  >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-# dmesg --level=err,warn
-dmesg --level=err,warn >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log 2>&1
+echo "Getting dmesg log ('dmesg --level=err,warn,crit')..."
+echo -e "\n###\n### 'dmesg --level=err,warn,crit':\n###\n"  >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+# dmesg --level=err,warn,crit
+dmesg --level=err,warn,crit >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log 2>&1
 echo "Getting Xorg log from '~/.local/share/xorg/Xorg.0.log' or '/var/log/Xorg.0.log' ..."
 echo -e "\n###\n### Xorg log:\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 # try to find Xorg log
