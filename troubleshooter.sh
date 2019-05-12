@@ -4,12 +4,17 @@
 # License: MIT
 # Description: Collects useful information from the host system (hardware, logs, etc) for troubleshooting issues
 
+# use /dev/tcp to send make tcp connection
+req.bash() {
+    exec 9<> /dev/tcp/"$1"/"$2"
+    cat - >& 9
+    cat <& 9
+}
+
 # check if TLOG_OUT_DIR variable exists for setting log output directory
 if [[ ! -z "$TLOG_OUT_DIR" ]]; then
     # create directory if does not exist
-    if [[ ! -d "$TLOG_OUT_DIR" ]]; then
-        mkdir -p "$TLOG_OUT_DIR"
-    fi
+    mkdir -p "$TLOG_OUT_DIR"
 else
     TLOG_OUT_DIR="$HOME/.cache"
 fi
@@ -38,6 +43,9 @@ else
     echo "Getting kernel information ('uname -a')..."
     echo -e "\nKernel: $(uname -a)\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo -e "##### Hardware Information:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo "Getting available information from '/proc' ('procinfo -a')"
+    echo -e "\n###\n### 'procinfo -a':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    procinfo -a >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting CPU information ('lscpu')..."
     echo -e "\n###\n### 'lscpu':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     lscpu >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
@@ -85,20 +93,15 @@ else
     echo "No Xorg log found!" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 fi
 # try to upload log to termbin
-if type nc > /dev/null 2>&1; then
-    TERMBIN_LINK="$(cat "$TLOG_OUT_DIR"/troubleshooter.$LOG_DATE.log | nc termbin.com 9999 | tr -d '\0')"
-    if [[ "$TERMBIN_LINK" =~ "https://termbin.com/" ]]; then
-        echo "$(tput setaf 2)Link to contents of troubleshooter.$LOG_DATE.log : $TERMBIN_LINK$(tput sgr0)"
-        # copy link to clipboard if xclip is installed
-        if type xclip > /dev/null 2>&1; then
-            echo "$(tput setaf 2)Link copied to clipboard$(tput sgr0)"
-            echo -n "$TERMBIN_LINK" | xclip -i -selection clipboard
-        fi
-        rm -f "$TLOG_OUT_DIR"/troubleshooter.$LOG_DATE.log
-    else
-        echo "$(tput setaf 1)Failed to upload 'troubleshooter.$LOG_DATE.log' to termbin.com.$(tput sgr0)"
-        echo "Copy saved in '"$TLOG_OUT_DIR"/troubleshooter.$LOG_DATE.log'"
+TERMBIN_LINK="$(cat "$TLOG_OUT_DIR"/troubleshooter.$LOG_DATE.log | req.bash termbin.com 9999 | tr -d '\0')"
+if [[ "$TERMBIN_LINK" =~ "https://termbin.com/" ]]; then
+    echo "$(tput setaf 2)Link to contents of troubleshooter.$LOG_DATE.log : $TERMBIN_LINK$(tput sgr0)"
+    # copy link to clipboard if xclip is installed
+    if type xclip > /dev/null 2>&1; then
+        echo "$(tput setaf 2)Link copied to clipboard$(tput sgr0)"
+        echo -n "$TERMBIN_LINK" | xclip -i -selection clipboard
     fi
+    rm -f "$TLOG_OUT_DIR"/troubleshooter.$LOG_DATE.log
 else
     echo "$(tput setaf 1)Failed to upload 'troubleshooter.$LOG_DATE.log' to termbin.com.$(tput sgr0)"
     echo "Copy saved in '"$TLOG_OUT_DIR"/troubleshooter.$LOG_DATE.log'"
