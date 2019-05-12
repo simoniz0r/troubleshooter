@@ -4,7 +4,7 @@
 # License: MIT
 # Description: Collects useful information from the host system (hardware, logs, etc) for troubleshooting issues
 
-# use /dev/tcp to send make tcp connection
+# use /dev/tcp to make tcp connection
 req.bash() {
     exec 9<> /dev/tcp/"$1"/"$2"
     cat - >& 9
@@ -43,7 +43,7 @@ else
     echo "Getting kernel information ('uname -a')..."
     echo -e "\nKernel: $(uname -a)\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo -e "##### Hardware Information:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-    echo "Getting available information from '/proc' ('procinfo -a')"
+    echo "Getting available information from '/proc' ('procinfo -a')..."
     echo -e "\n###\n### 'procinfo -a':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     procinfo -a >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting CPU information ('lscpu')..."
