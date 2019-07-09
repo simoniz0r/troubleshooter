@@ -44,8 +44,8 @@ else
     echo -e "\nKernel: $(uname -a)\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo -e "##### Hardware Information:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting available information from '/proc' ('procinfo -a')..."
-    echo -e "\n###\n### 'procinfo -a':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
-    procinfo -a >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    echo -e "\n###\n### 'procinfo':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+    procinfo >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     echo "Getting CPU information ('lscpu')..."
     echo -e "\n###\n### 'lscpu':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
     lscpu >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
