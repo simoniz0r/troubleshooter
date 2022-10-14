@@ -29,7 +29,7 @@ cat /etc/os-release >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 
 # get hardware info using procinfo, lscpu, lsblk, lspci, and lsusb
 echo "Getting available information from '/proc' ('procinfo -a')..."
-echo -e "##### Hardware Information:\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
+echo -e "\n\n##### Hardware Information:" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 echo -e "\n###\n### 'procinfo':\n###\n" >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 procinfo >> "$TLOG_OUT_DIR"/troubleshooter."$LOG_DATE".log
 echo "Getting CPU information ('lscpu')..."
